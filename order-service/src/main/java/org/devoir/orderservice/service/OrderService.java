@@ -27,7 +27,7 @@ public class OrderService {
 
         // CORRECTION : Appel réel au microservice Restaurant
         for (OrderItem item : order.getOrderItems()) {
-            MenuItemDTO menuItem = restaurantClient.getMenuItem(order.getRestaurantId(), item.getMenuItemId());
+            MenuItemDTO menuItem = restaurantClient.getMenuItem(item.getMenuItemId());
 
             // Mise à jour des infos avec les vraies données du restaurant
             item.setPrice(menuItem.getPrice());
