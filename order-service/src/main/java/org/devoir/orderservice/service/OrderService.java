@@ -1,7 +1,7 @@
 package org.devoir.orderservice.service;
 
-import org.devoir.orderservice.client.RestaurantClient; // Import nécessaire
-import org.devoir.orderservice.dto.MenuItemDTO;       // Import nécessaire
+import org.devoir.orderservice.client.RestaurantClient;
+import org.devoir.orderservice.dto.MenuItemDTO;
 import org.devoir.orderservice.model.Order;
 import org.devoir.orderservice.model.OrderItem;
 import org.devoir.orderservice.model.OrderStatus;
@@ -20,13 +20,14 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final RestaurantClient restaurantClient; // CORRECTION : Décommenté
+    private final RestaurantClient restaurantClient;
 
     public Order createOrder(Order order) {
         BigDecimal totalPrice = BigDecimal.ZERO;
 
-        // CORRECTION : Appel réel au microservice Restaurant
         for (OrderItem item : order.getOrderItems()) {
+            // CORRECTION ICI : Suppression du premier paramètre (restaurantId)
+            // L'appel se fait maintenant uniquement avec l'ID du menu item
             MenuItemDTO menuItem = restaurantClient.getMenuItem(item.getMenuItemId());
 
             // Mise à jour des infos avec les vraies données du restaurant
@@ -46,12 +47,18 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    // ... gardez les autres méthodes (getOrder, getUserOrders, etc.) telles quelles
     public Order getOrder(Long id) {
         return orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Commande non trouvée"));
     }
-    public List<Order> getUserOrders(Long userId) { return orderRepository.findByUserId(userId); }
-    public List<Order> getAllOrders() { return orderRepository.findAll(); }
+
+    public List<Order> getUserOrders(Long userId) {
+        return orderRepository.findByUserId(userId);
+    }
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
     public Order updateOrderStatus(Long id, OrderStatus status) {
         Order order = getOrder(id);
         order.setStatus(status);
