@@ -6,3 +6,7 @@ VALUES (1, 'Margherita', 'Tomate, Mozza', 12.50, 'Pizza', true, 1);
 
 INSERT INTO menu_item (id, name, description, price, category, available, restaurant_id)
 VALUES (2, 'Pasta Carbonara', 'Crème, Lardon', 14.00, 'Pasta', true, 1);
+
+-- Ensure PostgreSQL sequences are updated
+SELECT setval('restaurant_id_seq', (SELECT MAX(id) FROM restaurant));
+SELECT setval('menu_item_id_seq', (SELECT MAX(id) FROM menu_item));

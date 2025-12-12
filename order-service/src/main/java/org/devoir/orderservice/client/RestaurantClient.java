@@ -13,9 +13,6 @@ public interface RestaurantClient {
     @GetMapping("/api/restaurants/{id}")
     RestaurantDTO getRestaurant(@PathVariable("id") Long id);
 
-    @GetMapping("/api/restaurants/{restaurantId}/menu/{menuItemId}")
-    MenuItemDTO getMenuItem(
-            @PathVariable("restaurantId") Long restaurantId,
-            @PathVariable("menuItemId") Long menuItemId
-    );
+    @GetMapping("/api/menu-items/{menuItemId}")
+    MenuItemDTO getMenuItem(@PathVariable("menuItemId") Long menuItemId);
 }
